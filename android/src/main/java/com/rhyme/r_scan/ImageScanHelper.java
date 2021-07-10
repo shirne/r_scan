@@ -150,6 +150,7 @@ public class ImageScanHelper extends ContextWrapper {
         } catch (NotFoundException e) {
 //            e.printStackTrace();
             binaryBitmap = new BinaryBitmap(new GlobalHistogramBinarizer(source));
+            hints.put(DecodeHintType.ALSO_INVERTED, Boolean.TRUE);
             try {
                 return reader.decode(binaryBitmap, hints);
             } catch (NotFoundException ex) {

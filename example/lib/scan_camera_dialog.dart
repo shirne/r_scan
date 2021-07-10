@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:r_scan_example/scan_dialog.dart';
-import 'package:r_scan/src/r_scan_camera.dart';
+import 'package:r_scan/r_scan.dart';
+import 'scan_dialog.dart';
 
 List<RScanCameraDescription> rScanCameras;
 

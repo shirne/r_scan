@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:r_scan_example/scan_dialog.dart';
-import 'scan_camera_dialog.dart';
 import 'package:r_scan/r_scan.dart';
+import 'scan_dialog.dart';
+import 'scan_camera_dialog.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -10,11 +10,11 @@ import 'package:r_scan/r_scan.dart';
 const _scanType = 'com.rhyme_lph/r_scan_camera';
 final MethodChannel _channel = const MethodChannel('$_scanType/method');
 
-Future<List<RScanCameraDescription>> availableRScanCameras() async {
+Future<List<RScanCameraDescription>?> availableRScanCameras() async {
   try {
-    final List<Map<dynamic, dynamic>> cameras = await (_channel
-        .invokeListMethod<Map<dynamic, dynamic>>('availableCameras') as FutureOr<List<Map<dynamic, dynamic>>>);
-    return cameras.map((Map<dynamic, dynamic> camera) {
+    final List<Map<dynamic, dynamic>>? cameras = await _channel
+        .invokeListMethod<Map<dynamic, dynamic>>('availableCameras');
+    return cameras?.map((Map<dynamic, dynamic> camera) {
       return RScanCameraDescription(
         name: camera['name'],
         lensDirection: _parseCameraLensDirection(camera['lensFacing']),
@@ -43,12 +43,12 @@ class RScanCameraController extends ValueNotifier<RScanCameraValue> {
     _creatingCompleter = Completer<void>();
 
     try {
-      final Map<dynamic, dynamic?> reply =
-          await (_channel.invokeMapMethod('initialize', <String, dynamic>{
+      final Map<dynamic, dynamic>? reply =
+          await _channel.invokeMapMethod('initialize', <String, dynamic>{
         'cameraName': description.name,
         'resolutionPreset': _serializeResolutionPreset(resolutionPreset),
-      }) as FutureOr<Map<dynamic, dynamic?>>);
-      _textureId = reply['textureId'];
+      });
+      _textureId = reply!['textureId'];
       value = value.copyWith(
           isInitialized: true,
           previewSize: Size(reply['previewWidth'].toDouble(),
@@ -244,7 +244,7 @@ enum RScanCameraResolutionPreset {
 
 /// Returns the resolution preset as a String.
 String _serializeResolutionPreset(
-    RScanCameraResolutionPreset resolutionPreset) {
+    RScanCameraResolutionPreset? resolutionPreset) {
   switch (resolutionPreset) {
     case RScanCameraResolutionPreset.max:
       return 'max';
@@ -258,8 +258,9 @@ String _serializeResolutionPreset(
       return 'medium';
     case RScanCameraResolutionPreset.low:
       return 'low';
+    default:
+      throw ArgumentError('Unknown ResolutionPreset value');
   }
-  throw ArgumentError('Unknown ResolutionPreset value');
 }
 
 /// exception
